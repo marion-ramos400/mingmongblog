@@ -1,19 +1,17 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import Header from './components/Header/Header.vue';
+export default {
+    components: {
+        Header: Header
+    }     
+}
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+    <Header/>
   </header>
-
   <main>
-    <TheWelcome />
   </main>
 </template>
 
@@ -28,6 +26,7 @@ header {
 }
 
 @media (min-width: 1024px) {
+    /*
   header {
     display: flex;
     place-items: center;
@@ -43,5 +42,6 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+  */
 }
 </style>
