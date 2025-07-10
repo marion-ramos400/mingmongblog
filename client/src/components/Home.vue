@@ -18,12 +18,11 @@ console.log(aboutStrArr)
 <style>
 
 .home {
-    padding: 4.2em 1.6em; 
+    padding: 4.2em 0; 
 }
 
 .home p {
-    font-size: 1.2rem;
-
+    font-size: 1.4rem;
 }
 
 </style>
