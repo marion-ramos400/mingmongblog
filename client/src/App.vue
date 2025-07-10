@@ -1,18 +1,23 @@
 <script>
 import Header from './components/Header/Header.vue';
+import Home from './components/Home.vue';
 export default {
     components: {
-        Header: Header
+        Header: Header,
+        Home: Home
     }     
 }
 </script>
 
 <template>
-  <header>
-    <Header/>
-  </header>
-  <main>
-  </main>
+  <div class="content">
+    <header>
+      <Header/>
+    </header>
+    <main>
+      <Home/>
+    </main>
+  </div>
 </template>
 
 <style scoped>
@@ -26,6 +31,9 @@ header {
 }
 
 @media (min-width: 1024px) {
+.content {
+  width: 666px;
+}
     /*
   header {
     display: flex;

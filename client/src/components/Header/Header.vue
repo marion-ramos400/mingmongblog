@@ -18,7 +18,7 @@
 .header-menu {
     display: flex;
     justify-content: space-between;
-    width: 666px;/* TODO make this responsive, dont know how yet*/
+    /*width: 666px;TODO make this responsive, dont know how yet*/
     align-items: center;
     padding: 1.2em 0;
 }
