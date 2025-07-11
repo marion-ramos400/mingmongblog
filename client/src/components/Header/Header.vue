@@ -5,11 +5,11 @@
     <img class="avatar" src="/client/src/assets/imgs/fat-cat-face.jpg" alt="avatar"/>
     <nav class="navbar">
         <ul>
-            <li><a href="#">HOME</a></li>
+            <li><RouterLink to="/">HOME</RouterLink></li>
             <span>|</span>
-            <li><a href="#">POSTS</a></li>
+            <li><RouterLink to="/posts">POSTS</RouterLink></li>
             <span>|</span>
-            <li><a href="#">CONTACT</a></li>
+            <li><RouterLink to="/contact">CONTACT</RouterLink></li>
         </ul>
     </nav>
 </div>

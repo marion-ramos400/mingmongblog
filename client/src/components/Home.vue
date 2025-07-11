@@ -5,8 +5,6 @@ import {home} from '/client/src/config/home.js';
 const about = ref(home.about);
 const aboutStrArr = about._value.split('\n').map(line => line.trim());
 
-console.log(aboutStrArr)
-
 </script>
 <template>
 <div class="home">

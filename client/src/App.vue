@@ -15,7 +15,7 @@ export default {
       <Header/>
     </header>
     <main>
-      <Home/>
+      <RouterView/>
     </main>
   </div>
 </template>
