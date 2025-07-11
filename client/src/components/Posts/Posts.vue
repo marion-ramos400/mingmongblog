@@ -7,9 +7,9 @@ export default {
     data() {
         return {//TODO temp placeholder -> put this in db and backend
             postItems: [
-                { title: "This is the Article 1", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
-                { title: "Mmmmme  meow Mmoewmwew", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
-                { title: "Mm prrrr Mm preeow", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
+                { id: 1, title: "This is the Article 1", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
+                { id: 2, title: "Mmmmme  meow Mmoewmwew", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
+                { id: 3, title: "Mm prrrr Mm preeow", content: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat."},
             ] 
         } 
     }
@@ -19,6 +19,7 @@ export default {
 <div class="posts">
     <PostsItemPreview
         v-for="post in postItems"
+            :id= "post.id"
             :title="post.title"
             :content="post.content"
     >

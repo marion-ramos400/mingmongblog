@@ -2,6 +2,7 @@
 <script>
 export default {
     props: {
+        id: Number,
         title: String,
         content: String
     },
@@ -9,6 +10,9 @@ export default {
         shortenContent(content) {
             const split = content.split(" ")
             return split.slice(0, 15).join(" ") //TODO figure out how to put magic number from config and load here
+        },
+        formatUrl(id, title, content) {
+            return `/posts/${id}/${title}/${content}` 
         }
     }
 }
@@ -16,7 +20,7 @@ export default {
 
 <template>
 <div class="post-preview">
-    <h2>{{ title }}</h2>
+    <h2><RouterLink :to="formatUrl(id, title, content)">{{ title }}</RouterLink></h2>
     <p>{{ shortenContent(content) }}</p>
 </div>
 </template>
