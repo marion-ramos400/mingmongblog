@@ -7,7 +7,7 @@ import Contact from '@/components/Contact.vue'
 const routes = [
   { path: '/', component: Home},
   { path: '/posts', component: Posts},
-  { path: '/posts/:id/:title/:content', component: PostsItem},
+  { path: '/posts/:id', component: PostsItem},
   { path: '/contact', component: Contact},
 ]
 

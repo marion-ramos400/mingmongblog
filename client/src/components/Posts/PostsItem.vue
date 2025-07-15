@@ -1,4 +1,5 @@
 <script>
+import data from '@/data/dataPosts.js'
 //import {useRoute} from 'vue-router'
 //const route = useRoute();
 //console.log(route.params)
@@ -14,15 +15,34 @@ export default {
     mounted() {
         const params = this.$route.params
         this.id = parseInt(params.id)
-        this.title = params.title
-        this.content = params.content
+        const res = this.getPost(this.id)
+      if (res) {
+        this.title = res.title
+        this.content = res.content
+
+      }
+         
+    },
+    methods: {
+      getPost(id) {
+        const res = data.filter(item => {return item.id === id})
+        console.log(res)
+        if (res.length > 0) return res[0]
+        return null
+      },
+//      renderPost(id) {
+//        const res = this.getPost(id)
+//        if (res) {
+//          return "<h1>HELLO WORLD</h1>"
+//        }
+//      }
     }
 }
 
 </script>
 
 <template>
-<div>
+<div class="posts">
     <h1>{{ title }}</h1>
     <p>{{ content }}</p>
 </div>

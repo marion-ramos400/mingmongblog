@@ -1,5 +1,6 @@
 
 <script>
+import data from '@/data/dataPosts.js'
 export default {
     props: {
         id: Number,
@@ -11,8 +12,8 @@ export default {
             const split = content.split(" ")
             return split.slice(0, 15).join(" ") //TODO figure out how to put magic number from config and load here
         },
-        formatUrl(id, title, content) {
-            return `/posts/${id}/${title}/${content}` 
+        formatUrl(id) {
+            return `/posts/${id}` 
         }
     }
 }
@@ -20,7 +21,7 @@ export default {
 
 <template>
 <div class="post-preview">
-    <h2><RouterLink :to="formatUrl(id, title, content)">{{ title }}</RouterLink></h2>
+    <h2><RouterLink :to="formatUrl(id)">{{ title }}</RouterLink></h2>
     <p>{{ shortenContent(content) }}</p>
 </div>
 </template>
