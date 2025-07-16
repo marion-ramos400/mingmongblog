@@ -1,8 +1,5 @@
 <script>
 import data from '@/data/dataPosts.js'
-//import {useRoute} from 'vue-router'
-//const route = useRoute();
-//console.log(route.params)
 
 export default {
     data() {

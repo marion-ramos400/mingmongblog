@@ -36,12 +36,7 @@
     <div v-for="item in itemsSocial" class="item-social">
       <img :src="item.imgsrc" :alt="item.alt">
       <a :href="item.href">{{ item.text }}</a>
-
     </div>
-<!--     <div class="item-social"> -->
-<!--       <img :src="fb.imgsrc" alt="logo-facebook"> -->
-<!--       <a :href="fb.href">{{ fb.text }}</a> -->
-<!--     </div> -->
   </div>
 </template>
 <style>
