@@ -10,7 +10,7 @@ export default {
     methods: {
         shortenContent(content) {
             const split = content.split(" ")
-            return split.slice(0, 15).join(" ") //TODO figure out how to put magic number from config and load here
+            return split.slice(0, 30).join(" ") //TODO figure out how to put magic number from config and load here
         },
         formatUrl(id) {
             return `/posts/${id}` 
@@ -26,6 +26,11 @@ export default {
 </div>
 </template>
 <style>
+
+.post-preview {
+  width: 88%;
+
+}
 .post-preview h2{
     padding-top: 1.1em;
 }

@@ -2,8 +2,8 @@
 </script>
 <template>
 <div class="header-menu">
-    <img class="avatar" src="/client/src/assets/imgs/fat-cat-face.jpg" alt="avatar"/>
     <nav class="navbar">
+        <img class="avatar" src="/client/src/assets/imgs/fat-cat-face.jpg" alt="avatar"/>
         <ul>
             <li><RouterLink to="/">HOME</RouterLink></li>
             <span>|</span>
@@ -17,12 +17,16 @@
 <style>
 .header-menu {
     display: flex;
-    justify-content: space-between;
     /*width: 666px;TODO make this responsive, dont know how yet*/
     align-items: center;
     padding: 1.2em 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(24, 24, 24, 0.96);
 }
-
 
 .avatar {
     width: 64px;
@@ -32,13 +36,25 @@
     transform: scaleX(-1);
 }
 
+
+.navbar {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+  width: 666px;
+}
+
 .navbar ul {
     display: flex;
     list-style-type: none;
 }
 
 .navbar li {
-    padding: 0 2em;
+    padding: 1.2em 2em;
+}
+
+.navbar span {
+  padding: 1.2em 0;
 }
 
 

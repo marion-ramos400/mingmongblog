@@ -21,13 +21,19 @@ export default {
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
+/* header { */
+/*   line-height: 1.5; */
+/* } */
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+
+
+.content {
+  padding-top: 2em;
+
 }
 
 @media (min-width: 1024px) {

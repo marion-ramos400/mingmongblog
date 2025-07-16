@@ -26,16 +26,9 @@ export default {
     methods: {
       getPost(id) {
         const res = data.filter(item => {return item.id === id})
-        console.log(res)
         if (res.length > 0) return res[0]
         return null
       },
-//      renderPost(id) {
-//        const res = this.getPost(id)
-//        if (res) {
-//          return "<h1>HELLO WORLD</h1>"
-//        }
-//      }
     }
 }
 

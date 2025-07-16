@@ -16,7 +16,7 @@ const aboutStrArr = about._value.split('\n').map(line => line.trim());
 <style>
 
 .home {
-    padding: 4.2em 0; 
+    padding: 6em 0; 
 }
 
 .home p {
