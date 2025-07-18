@@ -1,10 +1,11 @@
 
-import models from 'express-cassandra'
+//import models from 'express-cassandra'
+import ExpressCassandra from 'express-cassandra'
 import * as path from 'path'
+import postSchema from '../models/PostModel.js'
 
-const __dirname = import.meta.dirname
-const serverDir = path.join(__dirname, '..')
-console.log(serverDir)
+//const __dirname = import.meta.dirname
+//const serverDir = path.join(__dirname, '..')
 
 
 
@@ -18,15 +19,13 @@ const config = {
 
 // setup models dir to cassandra
 const initDbTable = () => {
-  console.log('init')
-  models.setDirectory(serverDir + '/models').bind(
-    {
+  let models = ExpressCassandra.createClient({
       clientOptions: {
         contactPoints: config.contactPoints,
         localDataCenter: config.localDataCenter,
         protocolOptions: {port: config.port},
         keyspace: config.keyspace,
-        queryOptions: { consistency: models.consistencies.one },
+        queryOptions: { consistency: ExpressCassandra.consistencies.one },
         socketOptions: { readTimeout: 60000 }
       },
       ormOptions: {
@@ -36,27 +35,26 @@ const initDbTable = () => {
         },
         migration: 'safe'
       }
-    },
-    function(err) {
+  })
 
+  let PostModel = models.loadSchema('Post', postSchema);
+  PostModel.syncDB((err, result) => {
+    if (err) throw err;
+    let test = new models.instance.Post({
+      id: models.timeuuid(),
+      title: 'test-title-title',
+      content: 'content-content-content',
+      images: null,
+      videos: null
+    });
 
-      if (err) throw err;
-      console.log(models.instance.Post)
-//      let test = new models.instance.Post({
-//        id: '123123',
-//        title: 'test-title-title',
-//        content: 'content-content-content',
-//        images: {},
-//        videos: {}
-//      });
-//      test.save((saveerr) => {
-//        if (saveerr) {console.log(saveerr); return;}
-//        console.log('IT WORRRKS');
-//      });
-    }
-  )
-};
+    test.save((saveerr) => {
+      if (saveerr) {console.log(saveerr); return;}
+      console.log('IT WORRRKS');
+    });
 
+  })
 
+}
 
 export default initDbTable;

@@ -2,7 +2,6 @@
 //const express = require('express')
 
 import express from 'express'
-import models from 'express-cassandra'
 import initDbTable from './db/cassandra.js'
 
 const app = express()
