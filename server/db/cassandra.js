@@ -1,23 +1,16 @@
 
-//import models from 'express-cassandra'
 import ExpressCassandra from 'express-cassandra'
 import * as path from 'path'
 import postSchema from '../models/PostModel.js'
-
-//const __dirname = import.meta.dirname
-//const serverDir = path.join(__dirname, '..')
-
-
 
 const config = {
   keyspace : 'mingblog',
   localDataCenter : 'datacenter1',
   contactPoints : ['127.0.0.1'],
-//  contactPoints : ['localhost'],
   port : 9042
 }
 
-// setup models dir to cassandra
+// setup PostModel to cassandra
 const initDbTable = () => {
   let models = ExpressCassandra.createClient({
       clientOptions: {

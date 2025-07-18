@@ -1,6 +1,3 @@
-//getting error ReferenceError: require is not defined in ES module scope, you can use import instead
-//const express = require('express')
-
 import express from 'express'
 import initDbTable from './db/cassandra.js'
 
