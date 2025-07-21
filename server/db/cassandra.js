@@ -10,9 +10,11 @@ const config = {
   port : 9042
 }
 
+let models = null;
+
 // setup PostModel to cassandra
 const initDbTable = () => {
-  let models = ExpressCassandra.createClient({
+  models = ExpressCassandra.createClient({
       clientOptions: {
         contactPoints: config.contactPoints,
         localDataCenter: config.localDataCenter,
@@ -33,21 +35,21 @@ const initDbTable = () => {
   let PostModel = models.loadSchema('Post', postSchema);
   PostModel.syncDB((err, result) => {
     if (err) throw err;
-    let test = new models.instance.Post({
-      id: models.timeuuid(),
-      title: 'test-title-title',
-      content: 'content-content-content',
-      images: null,
-      videos: null
-    });
-
-    test.save((saveerr) => {
-      if (saveerr) {console.log(saveerr); return;}
-      console.log('IT WORRRKS');
-    });
+//    let test = new models.instance.Post({
+//      id: models.timeuuid(),
+//      title: 'test-title-title',
+//      content: 'content-content-content',
+//      images: null,
+//      videos: null
+//    });
+//
+//    test.save((saveerr) => {
+//      if (saveerr) {console.log(saveerr); return;}
+//      console.log('IT WORRRKS');
+//    });
 
   })
 
 }
 
-export default initDbTable;
+export { initDbTable, models };
