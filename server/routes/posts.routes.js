@@ -1,13 +1,17 @@
 
-import { createPost, getPost } from '../controllers/posts.controllers.js'
+import { createPost, getPost, deletePost } from '../controllers/posts.controllers.js'
+import { ResponseHandler } from '../response/responseHandler.js'
 import express from 'express';
 const router = express.Router();
 
 
 router.post('/create', (req, res) => {
-  console.log(req.body) 
   const id = createPost(req.body) //models.timeuuid obj
   res.send('test create')
+  res.json({
+    status: 'created',
+    postId: id
+  })
   //TODO:
   //validation callback
   //actual processing callback
@@ -17,11 +21,15 @@ router.post('/create', (req, res) => {
 
 
 router.get('/:id', (req, res) => {
-  const processPost = (post) => {
-    res.send(post)
-  }
-  getPost(req.params.id, processPost)
+  const respHandler = new ResponseHandler(res)
+  const processPost = (post) => { respHandler.sendSuccess(200, post) }
+  getPost(req.params.id, processPost, respHandler.sendError)
 });
+
+router.delete('/delete/:id', (req, res) => {
+  const respHandler = new ResponseHandler(res)
+  deletePost(req.params.id, respHandler.sendSuccess, respHandler.sendError)  
+})
 
 
 export default router;
