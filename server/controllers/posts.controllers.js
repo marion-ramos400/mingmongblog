@@ -53,6 +53,17 @@ export const getPost = (id, successCb, errCb) => {
   findOne(id, successCb, errCb)
 }
 
+export const getAllPosts = (successCb, errCb) => {
+  console.log('testing testing')
+  models.instance.Post.find(
+    {},
+    (err, posts) => {
+      sendIfError(errCb, err);
+      successCb(200, posts)
+    }
+  )
+}
+
 export const deletePost = (id, successCb, errCb)=> {
   const deleteCallback = (post) => {
     post.delete((err) => {
