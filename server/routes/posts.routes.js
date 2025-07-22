@@ -1,5 +1,5 @@
 
-import { createPost, getPost, deletePost } from '../controllers/posts.controllers.js'
+import { createPost, getPost, deletePost, updatePost } from '../controllers/posts.controllers.js'
 import { ResponseHandler } from '../response/responseHandler.js'
 import express from 'express';
 const router = express.Router();
@@ -29,6 +29,11 @@ router.get('/:id', (req, res) => {
 router.delete('/delete/:id', (req, res) => {
   const respHandler = new ResponseHandler(res)
   deletePost(req.params.id, respHandler.sendSuccess, respHandler.sendError)  
+})
+
+router.put('/update', (req, res) => {
+  const respHandler = new ResponseHandler(res)
+  updatePost(req.body.id, respHandler.sendSuccess, respHandler.sendError, req.body)
 })
 
 

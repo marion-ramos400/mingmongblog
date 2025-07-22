@@ -3,22 +3,35 @@ import { models } from '../db/cassandra.js'
 
 
 const findOne = (id, successCb, errCb, raw=true) => {
-  models.instance.Post.findOne(
-    {id: models.timeuuidFromString(id)},
-    { raw: raw},
-    (err, post) => {
-      if (err) { errCb(500, err); return; }
-      if (post) {
-        console.log(`Found Post Item with id: ${post.id}`)
-        successCb(post)
+  try {
+    const timeUuid = models.timeuuidFromString(id)
+    models.instance.Post.findOne(
+      {id: timeUuid},
+      { raw: raw},
+      (err, post) => {
+        sendIfError(errCb, err);
+        if (post) {
+          console.log(`Found Post Item with id: ${post.id}`)
+          successCb(post)
+        }
+        else {
+          const msg = `Unable to find Post Item with id: ${id}`
+          console.log(msg) 
+          errCb(404, msg)
+        }
       }
-      else {
-        const msg = `Unable to find Post Item with id: ${id}`
-        console.log(msg) 
-        errCb(404, msg)
-      }
-    }
-  )
+    )
+  }
+  catch (err) {
+    sendIfError(errCb, err);
+    return
+  }
+}
+
+const sendIfError = (errCallback, err) => {
+  if (err) {
+    errCallback(500, String(err))
+  }
 }
 
 
@@ -43,7 +56,7 @@ export const getPost = (id, successCb, errCb) => {
 export const deletePost = (id, successCb, errCb)=> {
   const deleteCallback = (post) => {
     post.delete((err) => {
-      if (err) { errCb(500, err); return; }
+      sendIfError(errCb, err);
       console.log(`deleted Post Item with id: ${post.id}`)
       successCb(200, { status: "deleted", postId: post.id})
     })
@@ -51,5 +64,18 @@ export const deletePost = (id, successCb, errCb)=> {
   findOne(id, deleteCallback, errCb, false)
 }
 
-
-
+export const updatePost = (id, successCb, errCb, newData) => {
+  delete newData.id
+  const updateCallback = (post) => {
+    models.instance.Post.update(
+      { id: models.timeuuidFromString(id) },
+      newData,
+      (err) => {
+        sendIfError(errCb, err);
+        console.log(`updated Post Item with id: ${id}`)
+        successCb(204, {})
+      }
+    )
+  }
+  findOne(id, updateCallback, errCb)
+}
