@@ -6,12 +6,8 @@ const router = express.Router();
 
 
 router.post('/create', (req, res) => {
-  const id = createPost(req.body) //models.timeuuid obj
-  res.send('test create')
-  res.json({
-    status: 'created',
-    postId: id
-  })
+  const respHandler = new ResponseHandler(res)
+  const id = createPost(req.body, respHandler.sendSuccess, respHandler.sendError)
   //TODO:
   //validation callback
   //actual processing callback

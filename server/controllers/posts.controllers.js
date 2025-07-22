@@ -35,7 +35,7 @@ const sendIfError = (errCallback, err) => {
 }
 
 
-export const createPost = (data) => {
+export const createPost = (data, successCb, errCb) => {
   let newPost = new models.instance.Post({
     id: models.timeuuid(),
     title: data.title,
@@ -43,9 +43,9 @@ export const createPost = (data) => {
     last_update_timestamp: Date.now(),
   })
   newPost.save((err) => {
-    if (logError(err)) { return; }
+    sendIfError(errCb, err)
     console.log(`created Post Item with id: ${newPost.id}`)
-    return newPost.id
+    successCb(200, { newPost })
   })
 }
 
@@ -65,7 +65,7 @@ export const deletePost = (id, successCb, errCb)=> {
 }
 
 export const updatePost = (id, successCb, errCb, newData) => {
-  delete newData.id
+  delete newData.id;
   const updateCallback = (post) => {
     models.instance.Post.update(
       { id: models.timeuuidFromString(id) },
