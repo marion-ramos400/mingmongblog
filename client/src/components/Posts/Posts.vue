@@ -1,19 +1,27 @@
 <script>
 import PostsItemPreview from './PostsItemPreview.vue'
-import data from '@/data/dataPosts.js'
+import postApi  from '@/api/posts.js'
 export default {
-    components: {
-        PostsItemPreview: PostsItemPreview
-    },
-    data() {
-        return {//TODO temp placeholder -> put this in db and backend
-            postItems: data,
-        } 
-    }
+  components: {
+      PostsItemPreview: PostsItemPreview
+  },
+  data() {
+      return {
+          postItems: [],
+      } 
+  },
+  mounted() {
+      //declare anonymous async function and call it
+      (async() => {
+        const res = await postApi.getAllPosts() 
+        this.postItems = res.data
+        })()
+  }
 }
 </script>
 <template>
 <div class="posts">
+    <button class="btn"><RouterLink to="/posts/add">Add Post</RouterLink></button>
     <PostsItemPreview
         v-for="post in postItems"
             :id= "post.id"
@@ -40,4 +48,26 @@ export default {
 .posts p {
     font-size: 1.1rem;
 }
+
+.btn {
+  margin-top: 24px;
+  padding: 8px 18px;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid white;
+  border-radius: 0.5em;
+  color: white;
+  background: transparent
+}
+
+.btn:hover {
+  background: #1bb21b;
+  border: 2px solid transparent;
+}
+
+.btn:active {
+  transform: scale(0.9);
+}
+
 </style>

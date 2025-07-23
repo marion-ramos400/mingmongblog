@@ -1,31 +1,27 @@
 <script>
 import data from '@/data/dataPosts.js'
+import postApi from '@/api/posts.js'
 
 export default {
     data() {
         return {
-            id: -1,
+            id: "",
             title: "",
             content: "" //TODO figure out how to add image with the content, text for now
         }
     },
     mounted() {
-        const params = this.$route.params
-        this.id = parseInt(params.id)
-        const res = this.getPost(this.id)
-      if (res) {
-        this.title = res.title
-        this.content = res.content
-
-      }
-         
+      const params = this.$route.params
+      this.id = params.id;
+      (async() => {
+        const res = await postApi.getPost(this.id)
+          if (res) {
+            this.title = res.data.title
+            this.content = res.data.content
+          }
+      })()
     },
     methods: {
-      getPost(id) {
-        const res = data.filter(item => {return item.id === id})
-        if (res.length > 0) return res[0]
-        return null
-      },
     }
 }
 

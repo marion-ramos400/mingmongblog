@@ -1,9 +1,8 @@
 
 <script>
-import data from '@/data/dataPosts.js'
 export default {
     props: {
-        id: Number,
+        id: String,
         title: String,
         content: String
     },

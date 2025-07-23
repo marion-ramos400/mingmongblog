@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import { initDbTable } from './db/cassandra.js'
 //import router/s
 import postsRouter from './routes/posts.routes.js'
@@ -15,6 +16,7 @@ initDbTable()
 //body parsing middleware to access req.body
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 
 //add the router/s via app.use()
