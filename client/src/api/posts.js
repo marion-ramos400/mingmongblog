@@ -63,6 +63,18 @@ const updatePost = async (data) => {
     console.log(err)
     return;
   }
+}
+
+const deletePost =  async (id) => {
+  try {
+    const res = await axios.delete(
+      endpoint(`/delete/${id}`)
+    )
+    return res;
+  } catch (err) {
+    console.log(err)
+    return;
+  }
 
 }
 
@@ -71,4 +83,5 @@ export default {
   getPost,
   createPost,
   updatePost,
+  deletePost,
 }

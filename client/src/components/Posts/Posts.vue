@@ -1,4 +1,5 @@
 <script>
+import { getCurrentInstance } from 'vue'
 import PostsItemPreview from './PostsItemPreview.vue'
 import postApi  from '@/api/posts.js'
 import { Operation } from '@/utils/forms.js'
@@ -12,12 +13,28 @@ export default {
           add: Operation.ADD,
       } 
   },
-  mounted() {
-      //declare anonymous async function and call it
+  methods: {
+    getPostItems() {
       (async() => {
         const res = await postApi.getAllPosts() 
         this.postItems = res.data
         })()
+    },
+    deleteItem(id){
+      (async() => {
+        await postApi.deletePost(id);
+      })();
+      
+      //update using array function
+      //note: simply replacing the array wont work in vue
+      const index = this.postItems.map(item => item.id).indexOf(id);
+      this.postItems.pop(index, 1);
+
+    },
+  },
+  mounted() {
+      //declare anonymous async function and call it
+      this.getPostItems();
   }
 }
 </script>
@@ -32,10 +49,11 @@ export default {
       </RouterLink>
     </button>
     <PostsItemPreview
-        v-for="post in postItems"
+        v-for="(post, index) in postItems"
             :id= "post.id"
             :title="post.title"
             :content="post.content"
+            :deleteCallback="this.deleteItem"
     >
     </PostsItemPreview>
 </div>

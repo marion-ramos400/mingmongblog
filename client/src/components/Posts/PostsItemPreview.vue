@@ -1,16 +1,18 @@
 
 <script>
 import { Operation } from '@/utils/forms.js'
+import postApi from '@/api/posts.js'
 export default {
   data() {
     return {
-      edit: Operation.EDIT
+      edit: Operation.EDIT,
     }
   },
   props: {
       id: String,
       title: String,
-      content: String
+      content: String,
+      deleteCallback: Function,
   },
   methods: {
       shortenContent(content) {
@@ -19,6 +21,9 @@ export default {
       },
       formatUrl(id) {
           return `/posts/${id}` 
+      },
+      deleteProcess(id) {
+        this.deleteCallback(id);
       }
   }
 }
@@ -36,7 +41,7 @@ export default {
               }">Edit
         </RouterLink>
       </button>
-      <button class="btn oper delete">Delete</button>
+      <button @click="deleteProcess(id)" class="btn oper delete">Delete</button>
     </div>
   </div>
     <p>{{ shortenContent(content) }}</p>
