@@ -44,8 +44,31 @@ const createPost = async (data) => {
   }
 }
 
+const updatePost = async (data) => {
+  const dataSend = {
+    id: data.id,
+    title: data.title,
+    content: data.content,
+    last_update_timestamp: Date.now()
+  };
+  if (dataSend.title == null) { delete dataSend.title }
+  if (dataSend.content == null) { delete dataSend.content }
+  try {
+    const res = await axios.put(
+      endpoint('/update'), 
+      dataSend
+    )
+    return res;
+  } catch (err) {
+    console.log(err)
+    return;
+  }
+
+}
+
 export default { 
   getAllPosts,
   getPost,
   createPost,
+  updatePost,
 }

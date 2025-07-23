@@ -1,6 +1,7 @@
 <script>
 import PostsItemPreview from './PostsItemPreview.vue'
 import postApi  from '@/api/posts.js'
+import { Operation } from '@/utils/forms.js'
 export default {
   components: {
       PostsItemPreview: PostsItemPreview
@@ -8,6 +9,7 @@ export default {
   data() {
       return {
           postItems: [],
+          add: Operation.ADD,
       } 
   },
   mounted() {
@@ -21,7 +23,14 @@ export default {
 </script>
 <template>
 <div class="posts">
-    <button class="btn"><RouterLink to="/posts/add">Add Post</RouterLink></button>
+    <button class="btn">
+      <RouterLink :to="
+        {
+          path: '/posts/form',
+          query: { mode: add}
+        }">Add Post
+      </RouterLink>
+    </button>
     <PostsItemPreview
         v-for="post in postItems"
             :id= "post.id"

@@ -29,8 +29,8 @@ export default {
 
 <template>
 <div class="posts">
-    <h1>{{ title }}</h1>
-    <p>{{ content }}</p>
+  <h1>{{ title }}</h1>
+  <p>{{ content }}</p>
 </div>
 </template>
 <style>

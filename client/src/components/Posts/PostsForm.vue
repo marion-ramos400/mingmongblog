@@ -1,0 +1,111 @@
+<script>
+  import postApi  from '@/api/posts.js'
+  import { Operation } from '@/utils/forms.js'
+  export default {
+    data() {
+      return {
+        id: "",
+        title: "",
+        content: "",
+        mode: ""
+      }
+    },
+    methods: {
+      addPost() {
+        (async() => {
+          const res = await postApi.createPost({
+            title: this.title,
+            content: this.content
+          })
+          this.$refs.addForm.reset() //clear fields
+        })()
+      },
+      updatePost() {
+        (async() => {
+          const res = await postApi.updatePost(
+            {
+              id: this.id,
+              title: this.title,
+              content: this.content
+            }
+          )
+        })()
+      },
+      processPost() {
+        if (this.mode == Operation.ADD) {
+          this.addPost();
+        }
+        else if (this.mode == Operation.EDIT) {
+          this.updatePost();
+        }
+      }
+    },
+    mounted() {
+      this.mode = this.$route.query.mode
+      if (this.mode == Operation.EDIT) {
+        //load post item
+        this.id = this.$route.query.id;
+        (async() => {
+          const res = await postApi.getPost(this.id)
+          this.title = res.data.title
+          this.content = res.data.content
+        })()
+      }
+    }
+  }
+</script>
+<template>
+  <div class="posts">
+    <form 
+      class="add-form"
+      ref="addForm"
+      v-on:submit.prevent="processPost" 
+      >
+      <h2 v-if="mode == 'add'">New Post</h2>
+      <h2 v-if="mode == 'edit'">Edit Post</h2>
+      <input 
+        placeholder="Title"
+        type="text" 
+        required 
+        v-model="title">
+      <textarea 
+        cols="70" rows="31"
+        required v-model="content" 
+        placeholder="Pour out a cup of feelings here...">
+      </textarea>
+      <br>
+      <button class="btn" type="submit">Save</button>
+      <button class="btn" style="marginLeft:8px;">
+          <RouterLink to="/posts">Exit</RouterLink>
+      </button>
+    </form>
+  </div>
+</template>
+<style>
+
+.add-form input {
+  background: transparent;
+  color: white;
+  border: 0;
+  border-bottom: 2px solid;
+  border-color: white;
+  font-size: 1.4em;
+  margin-top: 0.6em;
+  width: 100%;
+  outline: none;
+}
+
+.add-form textarea {
+  border: 1px solid white;
+  outline: none;
+  resize: none;
+  color: white;
+  background: transparent;
+  overflow: auto;
+  font-size: 1em;
+  border-radius: 10px;
+  padding: 1.2em;
+  margin-top: 1.6em;
+}
+
+</style>
