@@ -54,7 +54,6 @@ export const getPost = (id, successCb, errCb) => {
 }
 
 export const getAllPosts = (successCb, errCb) => {
-  console.log('testing testing')
   models.instance.Post.find(
     {},
     (err, posts) => {

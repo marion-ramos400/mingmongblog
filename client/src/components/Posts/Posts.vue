@@ -17,8 +17,8 @@ export default {
     getPostItems() {
       (async() => {
         const res = await postApi.getAllPosts() 
-        this.postItems = res.data
-        })()
+        this.postItems = res.data        
+      })()
     },
     deleteItem(id){
       (async() => {
@@ -28,7 +28,7 @@ export default {
       //update using array function
       //note: simply replacing the array wont work in vue
       const index = this.postItems.map(item => item.id).indexOf(id);
-      this.postItems.pop(index, 1);
+      this.postItems.splice(index, 1);
 
     },
   },

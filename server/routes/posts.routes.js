@@ -17,7 +17,15 @@ router.post('/create', (req, res) => {
 
 router.get('/', (req, res) => {
   const respHandler = new ResponseHandler(res)
-  getAllPosts(respHandler.sendSuccess, respHandler.sendError) 
+  const sendOrderByLastUpdate = (code, posts) => {
+    const postsCp = posts;
+    postsCp.sort((a, b) => {
+      return new Date(a.last_update_timestamp) - new Date(b.last_update_timestamp)
+    })
+    postsCp.reverse()
+    respHandler.sendSuccess(code, postsCp);
+  }
+  getAllPosts(sendOrderByLastUpdate, respHandler.sendError) 
 })
 
 router.get('/:id', (req, res) => {
