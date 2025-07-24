@@ -1,16 +1,27 @@
 <script>
 import { getCurrentInstance } from 'vue'
-import PostsItemPreview from './PostsItemPreview.vue'
+import PostsItemPreview from '@/components/Posts/PostsItemPreview.vue'
+import Modal from '@/components/Modal/Modal.vue'
 import postApi  from '@/api/posts.js'
 import { Operation } from '@/utils/forms.js'
+
 export default {
   components: {
-      PostsItemPreview: PostsItemPreview
+      PostsItemPreview: PostsItemPreview,
+      Modal: Modal,
   },
   data() {
       return {
           postItems: [],
           add: Operation.ADD,
+          postDeleteEvent: {
+            NONE: 0,
+            PROMPT: 1,
+            CONFIRM: 2,
+          },
+          userDeleteProcess: 0,
+          modalMsg: "",
+          focusId: "",
       } 
   },
   methods: {
@@ -19,22 +30,41 @@ export default {
         this.postItems = resData;
       })
     },
-    deleteItem(id){
-      postApi.deletePost(id, (resData) => {
+    userPromptDelete(id) {
+      this.focusId = id;
+      this.userDeleteProcess = this.postDeleteEvent.PROMPT;
+      this.modalMsg = "Are you sure you want to delete this post?"
+    },
+    deleteItem(){
+      postApi.deletePost(this.focusId, (resData) => {
         //update using array function
         //note: simply replacing the array wont work in vue
-        const index = this.postItems.map(item => item.id).indexOf(id);
+        const index = this.postItems.map(item => item.id).indexOf(this.focusId);
         this.postItems.splice(index, 1);
+        this.userDeleteProcess = this.postDeleteEvent.CONFIRM;
+        this.modalMsg = "Successfully Deleted Post!"
       })
     },
   },
   mounted() {
-      //declare anonymous async function and call it
       this.getPostItems();
   }
 }
 </script>
 <template>
+<Modal 
+  v-if="userDeleteProcess == postDeleteEvent.PROMPT" 
+  :msg="modalMsg" 
+  :confirmation="true"
+  :confirmTxt="`Delete`"
+  :confirmCallback="deleteItem"
+  :cancelCallback="()=>{userDeleteProcess = postDeleteEvent.NONE}"
+  />
+<Modal
+  v-else-if="userDeleteProcess == postDeleteEvent.CONFIRM"
+  :msg="modalMsg"
+  :confirmCallback="()=>{userDeleteProcess = postDeleteEvent.NONE}"
+/>
 <div class="posts">
     <button class="btn">
       <RouterLink :to="
@@ -49,7 +79,7 @@ export default {
             :id= "post.id"
             :title="post.title"
             :content="post.content"
-            :deleteCallback="this.deleteItem"
+            :deleteCallback="this.userPromptDelete"
     >
     </PostsItemPreview>
 </div>

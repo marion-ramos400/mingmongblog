@@ -1,8 +1,12 @@
 
 <script>
 import { Operation } from '@/utils/forms.js'
+import Modal from '@/components/Modal/Modal.vue'
 import postApi from '@/api/posts.js'
 export default {
+  components: {
+    Modal: Modal,
+  },
   data() {
     return {
       edit: Operation.EDIT,
@@ -15,13 +19,13 @@ export default {
       deleteCallback: Function,
   },
   methods: {
-      shortenContent(content) {
-          const split = content.split(" ")
-          return split.slice(0, 30).join(" ") //TODO figure out how to put magic number from config and load here
-      },
-      formatUrl(id) {
-          return `/posts/${id}` 
-      },
+    shortenContent(content) {
+        const split = content.split(" ")
+        return split.slice(0, 30).join(" ") //TODO figure out how to put magic number from config and load here
+    },
+    formatUrl(id) {
+        return `/posts/${id}` 
+    },
   }
 }
 </script>
@@ -38,7 +42,7 @@ export default {
               }">Edit
         </RouterLink>
       </button>
-      <button @click="deleteCallback(id)" class="btn oper delete">Delete</button>
+      <button @click="()=>{deleteCallback(id)}" class="btn oper delete">Delete</button>
     </div>
   </div>
     <p>{{ shortenContent(content) }}</p>

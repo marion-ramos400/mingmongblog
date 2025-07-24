@@ -1,13 +1,19 @@
 <script>
   import postApi  from '@/api/posts.js'
   import { Operation } from '@/utils/forms.js'
+  import Modal from '@/components/Modal/Modal.vue'
   export default {
+    components: {
+        Modal: Modal,
+    },
     data() {
       return {
         id: "",
         title: "",
         content: "",
-        mode: ""
+        mode: "",
+        success: false,
+        successMsg: "",
       }
     },
     methods: {
@@ -18,6 +24,10 @@
             content: this.content
           },
           (resData) => {
+            this.success = true;
+            this.successMsg = "Post Successfully Created!"
+            this.id = resData.newPost.id
+//            this.redirect = `/posts/${resData.newPost.id}`
             this.$refs.processForm.reset()
           }
         )
@@ -29,8 +39,19 @@
             title: this.title,
             content: this.content
           },
-          (resData) => {/* not implemented*/}
+          (resData) => {
+            this.success = true;  
+            this.successMsg = "Post Successfully Updated!"
+//            this.redirect = `/posts/${this.id}`
+          }
         )
+      },
+      redirect(event, exit=false) {
+        let endpoint = "/posts"
+        if (this.mode === Operation.EDIT && exit === false) {
+          endpoint = endpoint + `/${this.id}`
+        }
+        this.$router.push(endpoint);
       },
       processPost() {
         if (this.mode == Operation.ADD) {
@@ -55,6 +76,10 @@
   }
 </script>
 <template>
+  <Modal 
+    v-if="success" 
+    :msg="successMsg" 
+    :confirmCallback="redirect"/>
   <div class="posts">
     <form 
       class="add-form"
@@ -75,8 +100,7 @@
       </textarea>
       <br>
       <button class="btn" type="submit">Save</button>
-      <button class="btn" style="marginLeft:8px;">
-          <RouterLink to="/posts">Exit</RouterLink>
+      <button @click="(e)=>{this.redirect(e, exit=true)}" class="btn" style="marginLeft:8px;">Exit
       </button>
     </form>
   </div>
