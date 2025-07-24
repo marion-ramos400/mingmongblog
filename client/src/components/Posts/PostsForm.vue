@@ -12,24 +12,25 @@
     },
     methods: {
       addPost() {
-        (async() => {
-          const res = await postApi.createPost({
+        postApi.createPost(
+          {
             title: this.title,
             content: this.content
-          })
-          this.$refs.addForm.reset() //clear fields
-        })()
+          },
+          (resData) => {
+            this.$refs.processForm.reset()
+          }
+        )
       },
       updatePost() {
-        (async() => {
-          const res = await postApi.updatePost(
-            {
-              id: this.id,
-              title: this.title,
-              content: this.content
-            }
-          )
-        })()
+        postApi.updatePost(
+          {
+            id: this.id,
+            title: this.title,
+            content: this.content
+          },
+          (resData) => {/* not implemented*/}
+        )
       },
       processPost() {
         if (this.mode == Operation.ADD) {
@@ -45,11 +46,10 @@
       if (this.mode == Operation.EDIT) {
         //load post item
         this.id = this.$route.query.id;
-        (async() => {
-          const res = await postApi.getPost(this.id)
-          this.title = res.data.title
-          this.content = res.data.content
-        })()
+        postApi.getPost(this.id, (resData) => {
+          this.title = resData.title
+          this.content = resData.content
+        })
       }
     }
   }
@@ -58,7 +58,7 @@
   <div class="posts">
     <form 
       class="add-form"
-      ref="addForm"
+      ref="processForm"
       v-on:submit.prevent="processPost" 
       >
       <h2 v-if="mode == 'add'">New Post</h2>

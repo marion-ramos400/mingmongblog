@@ -15,21 +15,17 @@ export default {
   },
   methods: {
     getPostItems() {
-      (async() => {
-        const res = await postApi.getAllPosts() 
-        this.postItems = res.data        
-      })()
+      postApi.getAllPosts((resData) => {
+        this.postItems = resData;
+      })
     },
     deleteItem(id){
-      (async() => {
-        await postApi.deletePost(id);
-      })();
-      
-      //update using array function
-      //note: simply replacing the array wont work in vue
-      const index = this.postItems.map(item => item.id).indexOf(id);
-      this.postItems.splice(index, 1);
-
+      postApi.deletePost(id, (resData) => {
+        //update using array function
+        //note: simply replacing the array wont work in vue
+        const index = this.postItems.map(item => item.id).indexOf(id);
+        this.postItems.splice(index, 1);
+      })
     },
   },
   mounted() {

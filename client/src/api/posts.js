@@ -1,4 +1,5 @@
 import  axios  from 'axios'
+import { HTTP } from '@/api/methods.js'
 
 const domain = 'http://localhost:3000' //TODO put in config or .env file
 const posts = '/posts'
@@ -7,75 +8,87 @@ const endpoint = (suff="") => {
   return domain + posts + suff
 }
 
-const getAllPosts = async () => {
-  try {
-    const res = await axios.get(endpoint())
-    return res;
-    //TODO check status code
-  } catch (err) {
-    console.log(err) //TODO summon a modal at display
-    return;
-    //TODO check at caller if error/undefined/etc
-  }
+const makeRequest = (url, method, dataSend, resCallback) => {
+  let success = false;
+  let resdata = null;
+  let errmsg = null;
+  axios.request({
+    url: url,
+    method: method,
+    data: dataSend
+  })
+  .then(res => {
+    if (res.status < 300) {
+      success = true;
+      resdata = res.data;
+    }
+    else {
+      errmsg = `HTTP RESPONSE: ${res.status} : ${res.statusText}`;
+    }
+  })
+  .catch(err => {
+    success = false;
+    errmsg = String(err);
+  })
+  .finally(() => {
+    if(success) {
+      resCallback(resdata) 
+    }
+    else {
+      console.log(`Error calling ${apiEndpoint}: ${errmsg}`)
+    }
+  })
 }
 
-const getPost = async (id) => {
-  try {
-    const res = await axios.get(endpoint(`/${id}`))
-    return res;
-  } catch (err) {
-    console.log(err)
-    return;
-  }
+
+const getAllPosts = (resCallback) => {
+  makeRequest(
+    endpoint(),
+    HTTP.GET,
+    null,
+    resCallback 
+  )
 }
 
-const createPost = async (data) => {
-  try {
-    const res = await axios.post(endpoint('/create'), 
-      {
-        title: data.title,
-        content: data.content,
-        last_update_timestamp: Date.now()
-      })
-    return res;
-  } catch (err) {
-    console.log(err)
-    return;
-  }
+
+const getPost = (id, resCallback) => {
+  makeRequest(
+    endpoint(`/${id}`),
+    HTTP.GET,
+    null,
+    resCallback
+  )
 }
 
-const updatePost = async (data) => {
-  const dataSend = {
-    id: data.id,
-    title: data.title,
-    content: data.content,
-    last_update_timestamp: Date.now()
-  };
-  if (dataSend.title == null) { delete dataSend.title }
-  if (dataSend.content == null) { delete dataSend.content }
-  try {
-    const res = await axios.put(
-      endpoint('/update'), 
-      dataSend
-    )
-    return res;
-  } catch (err) {
-    console.log(err)
-    return;
-  }
+const createPost = (data, resCallback) => {
+  data.last_update_timestamp = Date.now()
+  makeRequest(
+    endpoint('/create'),
+    HTTP.POST,
+    data,
+    resCallback
+  )
 }
 
-const deletePost =  async (id) => {
-  try {
-    const res = await axios.delete(
-      endpoint(`/delete/${id}`)
-    )
-    return res;
-  } catch (err) {
-    console.log(err)
-    return;
-  }
+const updatePost = (data, resCallback) => {
+  data.last_update_timestamp = Date.now()
+  if (data.title == null) { delete data.title }
+  if (data.content == null) { delete data.content }
+  makeRequest(
+    endpoint('/update'),
+    HTTP.PUT,
+    data,
+    resCallback
+  ) 
+}
 
+const deletePost = (id, resCallback) => {
+  makeRequest(
+    endpoint(`/delete/${id}`),
+    HTTP.DELETE,
+    {},
+    resCallback
+  )
 }
 
 export default { 

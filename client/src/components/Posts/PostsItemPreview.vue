@@ -22,9 +22,6 @@ export default {
       formatUrl(id) {
           return `/posts/${id}` 
       },
-      deleteProcess(id) {
-        this.deleteCallback(id);
-      }
   }
 }
 </script>
@@ -41,7 +38,7 @@ export default {
               }">Edit
         </RouterLink>
       </button>
-      <button @click="deleteProcess(id)" class="btn oper delete">Delete</button>
+      <button @click="deleteCallback(id)" class="btn oper delete">Delete</button>
     </div>
   </div>
     <p>{{ shortenContent(content) }}</p>

@@ -13,13 +13,11 @@ export default {
     mounted() {
       const params = this.$route.params
       this.id = params.id;
-      (async() => {
-        const res = await postApi.getPost(this.id)
-          if (res) {
-            this.title = res.data.title
-            this.content = res.data.content
-          }
-      })()
+      postApi.getPost(this.id, (resData) => {
+        this.title = resData.title
+        this.content = resData.content
+      
+      })
     },
     methods: {
     }
