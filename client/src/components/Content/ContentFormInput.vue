@@ -27,25 +27,11 @@
       pasteImage(item) {
         //handle image wether "text/html" or "image/png"
         if (item.type.indexOf("image") === 0) {
-
           const blob = item.getAsFile()
           const reader = new FileReader()
           reader.onload = (event) => {
             const dataUrl = event.target.result;
-            this.componentsMain.push(
-              {
-                type: ContentFormImage,
-                props: {
-                  src: dataUrl,
-                }
-              },
-              {
-                type: ContentFormText,
-                props: {
-                  pasteCallback: this.pasteFromClipboard
-                }
-              }
-            )
+            this.addImageTextArea(dataUrl)
 //            this.imgTags.push(dataUrl)
           }
           reader.readAsDataURL(blob);
@@ -55,19 +41,28 @@
             if (elemStr.startsWith("<img")) {
               let tempDiv = document.createElement("div")
               tempDiv.innerHTML = elemStr
-              this.componentsMain.push(
-                {
-                  type: ContentFormImage,
-                  props: {
-                    src: tempDiv.firstChild.getAttribute('src'),
-                  }
-                }
-              )
+              this.addImageTextArea(tempDiv.firstChild.getAttribute('src'))
 //              this.imgTags.push(tempDiv.firstChild.getAttribute('src'))
             }
           })
         }
       },
+      addImageTextArea(imgSrc) {
+        this.componentsMain.push(
+          {
+            type: ContentFormImage,
+            props: {
+              src: imgSrc,
+            }
+          },
+          {
+            type: ContentFormText,
+            props: {
+              pasteCallback: this.pasteFromClipboard
+            }
+          }
+        )
+      }
     },
     mounted() {
       this.componentsMain.push(
