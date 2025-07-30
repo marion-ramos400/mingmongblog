@@ -2,9 +2,11 @@
   import postApi  from '@/api/posts.js'
   import { Operation } from '@/utils/forms.js'
   import Modal from '@/components/Modal/Modal.vue'
+  import ContentFormInput from '@/components/Content/ContentFormInput.vue'
   export default {
     components: {
         Modal: Modal,
+        ContentFormInput: ContentFormInput,
     },
     data() {
       return {
@@ -27,7 +29,6 @@
             this.success = true;
             this.successMsg = "Post Successfully Created!"
             this.id = resData.newPost.id
-//            this.redirect = `/posts/${resData.newPost.id}`
             this.$refs.processForm.reset()
           }
         )
@@ -42,7 +43,6 @@
           (resData) => {
             this.success = true;  
             this.successMsg = "Post Successfully Updated!"
-//            this.redirect = `/posts/${this.id}`
           }
         )
       },
@@ -60,7 +60,7 @@
         else if (this.mode == Operation.EDIT) {
           this.updatePost();
         }
-      }
+      },
     },
     mounted() {
       this.mode = this.$route.query.mode
@@ -81,27 +81,28 @@
     :msg="successMsg" 
     :confirmCallback="redirect"/>
   <div class="posts">
+<!--     <ContentFormInput/> -->
     <form 
       class="add-form"
       ref="processForm"
       v-on:submit.prevent="processPost" 
       >
-      <h2 v-if="mode == 'add'">New Post</h2>
-      <h2 v-if="mode == 'edit'">Edit Post</h2>
-      <input 
-        placeholder="Title"
-        type="text" 
-        required 
-        v-model="title">
-      <textarea 
-        cols="70" rows="31"
-        required v-model="content" 
-        placeholder="Pour out a cup of feelings here...">
-      </textarea>
-      <br>
-      <button class="btn" type="submit">Save</button>
-      <button @click="(e)=>{this.redirect(e, exit=true)}" class="btn" style="marginLeft:8px;">Exit
-      </button>
+        <h2 v-if="mode == 'add'">New Post</h2>
+        <h2 v-if="mode == 'edit'">Edit Post</h2>
+        <input 
+          placeholder="Title"
+          type="text" 
+          required 
+          v-model="title">
+        <textarea 
+          cols="70" rows="31"
+          required v-model="content" 
+          placeholder="Pour out a cup of feelings here...">
+        </textarea>
+        <br>
+        <button class="btn" type="submit">Save</button>
+        <button @click="(e)=>{this.redirect(e, exit=true)}" class="btn" style="marginLeft:8px;">Exit
+        </button>
     </form>
   </div>
 </template>
