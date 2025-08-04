@@ -1,7 +1,7 @@
 <script>
   import ContentFormText from '@/components/Content/ContentFormText.vue'
   import ContentFormImage from '@/components/Content/ContentFormImage.vue'
-  import { markRaw } from 'vue'
+  import { markRaw, getCurrentInstance } from 'vue'
   export default {
     components: {
       ContentFormText: markRaw(ContentFormText),
@@ -19,19 +19,34 @@
       }
     },
     methods: {
-      pasteFromClipboard(e) {
+      pasteFromClipboard(e, id) {
+        const index = this.componentsMain.map(item => item.id).indexOf(id)
         let item = e.clipboardData.items[0]; 
-        this.pasteImage(item)  
+        let cursor = e.target.selectionEnd
+        let inline = null
+        if (cursor < e.target.value.length) {
+          //if cursor target is in between words (inside full text)
+          //replace current element with ContentFormText1, ContentFormImage, ContentFormText2
+          const text = e.target.value
+          const textval1 = text.slice(0, cursor)
+          const textval2 = text.slice(cursor)
+          inline = {
+            index: index,
+            textSplit: [textval1, textval2]
+          }
+
+        }
+        this.pasteImage(item, inline)
 
       },
-      pasteImage(item) {
+      pasteImage(item, inline) {
         //handle image wether "text/html" or "image/png"
         if (item.type.indexOf("image") === 0) {
           const blob = item.getAsFile()
           const reader = new FileReader()
           reader.onload = (event) => {
             const dataUrl = event.target.result;
-            this.addImageTextArea(dataUrl)
+            this.addImageTextArea(dataUrl, inline)
 //            this.imgTags.push(dataUrl)
           }
           reader.readAsDataURL(blob);
@@ -41,48 +56,72 @@
             if (elemStr.startsWith("<img")) {
               let tempDiv = document.createElement("div")
               tempDiv.innerHTML = elemStr
-              this.addImageTextArea(tempDiv.firstChild.getAttribute('src'))
+              this.addImageTextArea(tempDiv.firstChild.getAttribute('src'), inline)
 //              this.imgTags.push(tempDiv.firstChild.getAttribute('src'))
             }
           })
         }
       },
-      addImageTextArea(imgSrc) {
-        this.componentsMain.push(
-          {
-            type: ContentFormImage,
-            props: {
-              src: imgSrc,
+      addImageTextArea(imgSrc, inline) {
+        if(inline) {
+          this.componentsMain.splice(inline.index, 1,
+            {
+              id: crypto.randomUUID(),
+              type: ContentFormText,
+              props: {txt: inline.textSplit[0]}
+            },
+            {
+              id: crypto.randomUUID(),
+              type: ContentFormImage,
+              props: { src: imgSrc, }
+            },
+            {
+              id: crypto.randomUUID(),
+              type: ContentFormText,
+              props: {txt: inline.textSplit[1], focus: true}
             }
-          },
-          {
-            type: ContentFormText,
-            props: {
-              pasteCallback: this.pasteFromClipboard
+          )
+
+        }
+        else {
+          this.componentsMain.push(
+            {
+              id: crypto.randomUUID(),
+              type: ContentFormImage,
+              props: { src: imgSrc, }
+            },
+            {
+              id: crypto.randomUUID(),
+              type: ContentFormText,
+  //            props: { pasteCallback: this.pasteFromClipboard }
+              props: {focus: true}
             }
-          }
-        )
-      }
+          )
+        }
+      },
     },
     mounted() {
       this.componentsMain.push(
         {
           type: ContentFormText,
-          props: {
-            pasteCallback: this.pasteFromClipboard
-          }
-        }
+//          props: { pasteCallback: this.pasteFromClipboard }
+          id: crypto.randomUUID(),
+            props: {}
+        },
       )
     }
   }
 
 
+//    :key="JSON.stringify(component)"
 </script>
 <template>
 <div class="form-content">
   <component 
-    v-for="component in componentsMain"
+    v-for="(component, index) in componentsMain"
     :is="component.type"
+    :key="component.id"
+    @paste="(e) => {pasteFromClipboard(e, component.id)}"
     v-bind="component.props">
   </component>
 </div>

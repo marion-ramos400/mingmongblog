@@ -81,7 +81,7 @@
     :msg="successMsg" 
     :confirmCallback="redirect"/>
   <div class="posts">
-<!--     <ContentFormInput/> -->
+    <ContentFormInput/>
     <form 
       class="add-form"
       ref="processForm"

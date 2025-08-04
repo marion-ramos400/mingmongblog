@@ -7,7 +7,9 @@
       }
     },
     props: [
-      'pasteCallback'
+      'pasteCallback',
+      'txt',
+      'focus',
     ],
     methods: {
       addRow() {
@@ -15,7 +17,13 @@
       }
     },
     mounted() {
-      this.$refs.txtinput.focus()
+      if(this.focus) {
+        this.$refs.txtinput.focus()
+      }
+      if (this.txt) {
+        this.$refs.txtinput.value = this.txt
+        this.$refs.txtinput.selectionEnd = 0;
+      }
     }
   }
 </script>
