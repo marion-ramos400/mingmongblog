@@ -93,7 +93,6 @@
             {
               id: crypto.randomUUID(),
               type: ContentFormText,
-  //            props: { pasteCallback: this.pasteFromClipboard }
               props: {focus: true}
             }
           )
@@ -104,16 +103,16 @@
       this.componentsMain.push(
         {
           type: ContentFormText,
-//          props: { pasteCallback: this.pasteFromClipboard }
           id: crypto.randomUUID(),
-            props: {}
+            props: {
+              placeholder: "Pour out a cup of feelings here..."
+            }
         },
       )
     }
   }
 
 
-//    :key="JSON.stringify(component)"
 </script>
 <template>
 <div class="form-content">
@@ -131,6 +130,6 @@
 .form-content {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 100%;
 }
 </style>

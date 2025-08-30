@@ -2,13 +2,14 @@
   export default {
     data() {
       return {
-        cols: 20,
+        cols: 10,
         rows: 1
       }
     },
     props: [
       'pasteCallback',
       'txt',
+      'placeholder',
       'focus',
     ],
     methods: {
@@ -34,10 +35,16 @@
     @paste="pasteCallback"
     :cols="cols" 
     :rows="rows"
+    :placeholder="placeholder"
     class="form-txtarea"></textarea>
 </template>
 <style>
 .form-txtarea {
   resize: none;
+  font-size: 1em;
+  outline: none;
+  color: white;
+  background: none;
+  border: none;
 }
 </style>

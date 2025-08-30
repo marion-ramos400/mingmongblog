@@ -81,7 +81,6 @@
     :msg="successMsg" 
     :confirmCallback="redirect"/>
   <div class="posts">
-    <ContentFormInput/>
     <form 
       class="add-form"
       ref="processForm"
@@ -94,11 +93,9 @@
           type="text" 
           required 
           v-model="title">
-        <textarea 
-          cols="70" rows="31"
-          required v-model="content" 
-          placeholder="Pour out a cup of feelings here...">
-        </textarea>
+        <div class="content-container">
+          <ContentFormInput/>
+        </div>
         <br>
         <button class="btn" type="submit">Save</button>
         <button @click="(e)=>{this.redirect(e, exit=true)}" class="btn" style="marginLeft:8px;">Exit
@@ -120,17 +117,13 @@
   outline: none;
 }
 
-.add-form textarea {
+.content-container {
   border: 1px solid white;
-  outline: none;
-  resize: none;
-  color: white;
-  background: transparent;
-  overflow: auto;
-  font-size: 1em;
   border-radius: 10px;
   padding: 1.2em;
   margin-top: 1.6em;
+  height: 540px;
+  overflow: auto;
 }
 
 </style>
