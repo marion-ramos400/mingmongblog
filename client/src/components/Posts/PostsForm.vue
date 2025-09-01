@@ -12,7 +12,7 @@
       return {
         id: "",
         title: "",
-        content: "",
+        content: [],
         mode: "",
         success: false,
         successMsg: "",
@@ -20,18 +20,20 @@
     },
     methods: {
       addPost() {
-        postApi.createPost(
-          {
-            title: this.title,
-            content: this.content
-          },
-          (resData) => {
-            this.success = true;
-            this.successMsg = "Post Successfully Created!"
-            this.id = resData.newPost.id
-            this.$refs.processForm.reset()
-          }
-        )
+        let content = this.$refs.contentform.getPostData();
+        console.log(content)
+//        postApi.createPost(
+//          {
+//            title: this.title,
+//            content: this.content
+//          },
+//          (resData) => {
+//            this.success = true;
+//            this.successMsg = "Post Successfully Created!"
+//            this.id = resData.newPost.id
+//            this.$refs.processForm.reset()
+//          }
+//        )
       },
       updatePost() {
         postApi.updatePost(
@@ -94,7 +96,7 @@
           required 
           v-model="title">
         <div class="content-container">
-          <ContentFormInput/>
+          <ContentFormInput ref="contentform"/>
         </div>
         <br>
         <button class="btn" type="submit">Save</button>

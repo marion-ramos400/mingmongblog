@@ -12,13 +12,24 @@
         rows: 1,
         cols: 20,
         txt: "",
-        imgTags: [],
-        txtItems: [],
-        elemsImg: [],
         componentsMain: [],
       }
     },
     methods: {
+      getPostData() {
+        let children = [].slice.call(
+          this.$refs.postData.children
+        )
+        return children.map((e) => {
+          if (e.type == "textarea") {
+            return {type: "text", content: e.value}
+          }
+          else if (e.tagName == "IMG") {
+            const imgtype = e.src.startsWith("data") ? "imgdata" : "imgUrl"
+            return {type: imgtype, content: e.src}
+          }
+        });
+      },
       pasteFromClipboard(e, id) {
         const index = this.componentsMain.map(item => item.id).indexOf(id)
         let item = e.clipboardData.items[0]; 
@@ -47,7 +58,6 @@
           reader.onload = (event) => {
             const dataUrl = event.target.result;
             this.addImageTextArea(dataUrl, inline)
-//            this.imgTags.push(dataUrl)
           }
           reader.readAsDataURL(blob);
 
@@ -57,7 +67,6 @@
               let tempDiv = document.createElement("div")
               tempDiv.innerHTML = elemStr
               this.addImageTextArea(tempDiv.firstChild.getAttribute('src'), inline)
-//              this.imgTags.push(tempDiv.firstChild.getAttribute('src'))
             }
           })
         }
@@ -115,7 +124,7 @@
 
 </script>
 <template>
-<div class="form-content">
+<div class="form-content" ref="postData">
   <component 
     v-for="(component, index) in componentsMain"
     :is="component.type"
