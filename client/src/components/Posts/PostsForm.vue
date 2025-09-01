@@ -20,20 +20,19 @@
     },
     methods: {
       addPost() {
-        let content = this.$refs.contentform.getPostData();
-        console.log(content)
-//        postApi.createPost(
-//          {
-//            title: this.title,
-//            content: this.content
-//          },
-//          (resData) => {
-//            this.success = true;
-//            this.successMsg = "Post Successfully Created!"
-//            this.id = resData.newPost.id
-//            this.$refs.processForm.reset()
-//          }
-//        )
+        let data = this.$refs.contentform.getPostData();
+        postApi.createPost(
+          {
+            title: this.title,
+            content: JSON.stringify(data)
+          },
+          (resData) => {
+            this.success = true;
+            this.successMsg = "Post Successfully Created!"
+            this.id = resData.newPost.id
+            this.$refs.processForm.reset()
+          }
+        )
       },
       updatePost() {
         postApi.updatePost(
