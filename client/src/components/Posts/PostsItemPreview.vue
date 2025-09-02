@@ -20,7 +20,9 @@ export default {
   },
   methods: {
     shortenContent(content) {
-        const split = content.split(" ")
+        const contarr = JSON.parse(content)
+        const txtItems = contarr.filter((e) => e.type == 'text')
+        const split = txtItems[0].content.split(" ")
         return split.slice(0, 30).join(" ") //TODO figure out how to put magic number from config and load here
     },
     formatUrl(id) {
