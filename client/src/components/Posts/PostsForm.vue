@@ -35,11 +35,12 @@
         )
       },
       updatePost() {
+        let data = this.$refs.contentform.getPostData();
         postApi.updatePost(
           {
             id: this.id,
             title: this.title,
-            content: this.content
+            content: JSON.stringify(data)
           },
           (resData) => {
             this.success = true;  
