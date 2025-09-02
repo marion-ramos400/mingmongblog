@@ -16,6 +16,23 @@
       }
     },
     methods: {
+      preload(data) {
+        this.componentsMain = data.map((e) => {
+          if (e.type == "text") {
+            return {
+              type: ContentFormText,
+              id: crypto.randomUUID(),
+              props: { txt: e.content }
+            }
+          }
+          else if (e.type.startsWith("img"))
+            return {
+              id: crypto.randomUUID(),
+              type: ContentFormImage,
+              props: { src: e.content, }
+            }
+        })
+      },
       getPostData() {
         let children = [].slice.call(
           this.$refs.postData.children

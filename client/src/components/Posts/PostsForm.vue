@@ -70,7 +70,8 @@
         this.id = this.$route.query.id;
         postApi.getPost(this.id, (resData) => {
           this.title = resData.title
-          this.content = resData.content
+          this.content = JSON.parse(resData.content)
+          this.$refs.contentform.preload(this.content)
         })
       }
     }
@@ -95,7 +96,8 @@
           required 
           v-model="title">
         <div class="content-container">
-          <ContentFormInput ref="contentform"/>
+          <ContentFormInput 
+            ref="contentform"/>
         </div>
         <br>
         <button class="btn" type="submit">Save</button>
