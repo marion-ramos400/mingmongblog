@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
 initDbTable()
 
 //body parsing middleware to access req.body
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: "200mb" }))
+app.use(express.urlencoded({ extended: true, limit: "200mb" }))
 app.use(cors())
 
 
