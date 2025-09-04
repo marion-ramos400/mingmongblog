@@ -2,11 +2,17 @@
   export default {
     props: [
       'src',
-    ]
+      'dWidth',
+      'dHeight'
+    ],
   }
 </script>
 <template>
-  <div class="content-form-img">
+  <div 
+    class="content-form-img" 
+    ref='imgContainer'
+    :style="{width: dWidth + 'px', height: dHeight + 'px'}"
+    >
     <img :src="src" alt="image inside form"/>
   </div>
 </template>

@@ -29,7 +29,11 @@
             return {
               id: crypto.randomUUID(),
               type: ContentFormImage,
-              props: { src: e.content, }
+              props: { 
+                src: e.content, 
+                dWidth: e.imgWidth,
+                dHeight: e.imgHeight
+              }
             }
         })
       },
@@ -45,7 +49,12 @@
             const imgtag = [].slice.call(e.children)[0]
             if (imgtag.tagName == "IMG") {
               const imgtype = imgtag.src.startsWith("data") ? "imgdata" : "imgUrl"
-              return {type: imgtype, content: imgtag.src}
+              return {
+                type: imgtype, 
+                content: imgtag.src,
+                imgWidth: e.clientWidth,
+                imgHeight: e.clientHeight
+              }
             }
           }
         });
