@@ -6,10 +6,20 @@
   }
 </script>
 <template>
-  <img :src="src" alt="image inside form" class="content-form-img"/>
+  <div class="content-form-img">
+    <img :src="src" alt="image inside form"/>
+  </div>
 </template>
 <style>
 .content-form-img {
-  object-fit: contain;
+  resize: both;
+  overflow: auto;
 }
+
+.content-form-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
 </style>

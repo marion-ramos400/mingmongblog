@@ -41,9 +41,12 @@
           if (e.type == "textarea") {
             return {type: "text", content: e.value}
           }
-          else if (e.tagName == "IMG") {
-            const imgtype = e.src.startsWith("data") ? "imgdata" : "imgUrl"
-            return {type: imgtype, content: e.src}
+          else if (e.tagName == "DIV") {
+            const imgtag = [].slice.call(e.children)[0]
+            if (imgtag.tagName == "IMG") {
+              const imgtype = imgtag.src.startsWith("data") ? "imgdata" : "imgUrl"
+              return {type: imgtype, content: imgtag.src}
+            }
           }
         });
       },
