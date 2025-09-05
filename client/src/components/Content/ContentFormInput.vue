@@ -1,11 +1,13 @@
 <script>
   import ContentFormText from '@/components/Content/ContentFormText.vue'
   import ContentFormImage from '@/components/Content/ContentFormImage.vue'
+  import ContentFormVideo from '@/components/Content/ContentFormVideo.vue'
   import { markRaw, getCurrentInstance } from 'vue'
   export default {
     components: {
       ContentFormText: markRaw(ContentFormText),
       ContentFormImage: markRaw(ContentFormImage),
+      ContentFormVideo: markRaw(ContentFormVideo),
     },
     data() {
       return {
@@ -76,17 +78,23 @@
           }
 
         }
-        this.pasteImage(item, inline)
-
+          const isVid = this.pasteItem(e.clipboardData, inline)
+          if (isVid) {e.preventDefault()}
+        
       },
-      pasteImage(item, inline) {
-        //handle image wether "text/html" or "image/png"
+      pasteItem(cbData, inline) {
+        const item = cbData.items[0]
+        const txtData = cbData.getData('Text')
+        if (txtData.startsWith("https://www.youtube.com/")){
+          this.addElemTextArea(txtData, inline, "vid") 
+          return true
+        }
         if (item.type.indexOf("image") === 0) {
           const blob = item.getAsFile()
           const reader = new FileReader()
           reader.onload = (event) => {
             const dataUrl = event.target.result;
-            this.addImageTextArea(dataUrl, inline)
+            this.addElemTextArea(dataUrl, inline, "img")
           }
           reader.readAsDataURL(blob);
 
@@ -95,12 +103,26 @@
             if (elemStr.startsWith("<img")) {
               let tempDiv = document.createElement("div")
               tempDiv.innerHTML = elemStr
-              this.addImageTextArea(tempDiv.firstChild.getAttribute('src'), inline)
+              this.addElemTextArea(tempDiv.firstChild.getAttribute('src'), inline, "img")
             }
           })
+
         }
+        return false
       },
-      addImageTextArea(imgSrc, inline) {
+      addElemTextArea(elemSrc, inline, elemType="img") {
+        let entry = {
+          id: crypto.randomUUID(),
+          type: ContentFormImage,
+          props: { src: elemSrc, }
+        }
+        if (elemType == 'vid') {
+          entry = {
+            id: crypto.randomUUID(),
+            type: ContentFormVideo,
+            props: { src: elemSrc, }
+          }
+        }
         if(inline) {
           this.componentsMain.splice(inline.index, 1,
             {
@@ -108,11 +130,7 @@
               type: ContentFormText,
               props: {txt: inline.textSplit[0]}
             },
-            {
-              id: crypto.randomUUID(),
-              type: ContentFormImage,
-              props: { src: imgSrc, }
-            },
+            entry,
             {
               id: crypto.randomUUID(),
               type: ContentFormText,
@@ -123,11 +141,7 @@
         }
         else {
           this.componentsMain.push(
-            {
-              id: crypto.randomUUID(),
-              type: ContentFormImage,
-              props: { src: imgSrc, }
-            },
+            entry,
             {
               id: crypto.randomUUID(),
               type: ContentFormText,
